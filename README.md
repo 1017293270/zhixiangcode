@@ -1,129 +1,131 @@
-<p align="center">
-  <a href="https://opencode.ai">
-    <picture>
-      <source srcset="packages/console/app/src/asset/logo-ornate-dark.svg" media="(prefers-color-scheme: dark)">
-      <source srcset="packages/console/app/src/asset/logo-ornate-light.svg" media="(prefers-color-scheme: light)">
-      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="OpenCode logo">
-    </picture>
-  </a>
-</p>
-<p align="center">The open source AI coding agent.</p>
-<p align="center">
-  <a href="https://opencode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/opencode-ai"><img alt="npm" src="https://img.shields.io/npm/v/opencode-ai?style=flat-square" /></a>
-  <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
-</p>
+# ZXCode
 
-<p align="center">
-  <a href="README.md">English</a> |
-  <a href="README.zh.md">简体中文</a> |
-  <a href="README.zht.md">繁體中文</a> |
-  <a href="README.ko.md">한국어</a> |
-  <a href="README.de.md">Deutsch</a> |
-  <a href="README.es.md">Español</a> |
-  <a href="README.fr.md">Français</a> |
-  <a href="README.it.md">Italiano</a> |
-  <a href="README.da.md">Dansk</a> |
-  <a href="README.ja.md">日本語</a> |
-  <a href="README.pl.md">Polski</a> |
-  <a href="README.ru.md">Русский</a> |
-  <a href="README.bs.md">Bosanski</a> |
-  <a href="README.ar.md">العربية</a> |
-  <a href="README.no.md">Norsk</a> |
-  <a href="README.br.md">Português (Brasil)</a> |
-  <a href="README.th.md">ไทย</a> |
-  <a href="README.tr.md">Türkçe</a> |
-  <a href="README.uk.md">Українська</a> |
-  <a href="README.bn.md">বাংলা</a> |
-  <a href="README.gr.md">Ελληνικά</a> |
-  <a href="README.vi.md">Tiếng Việt</a>
-</p>
+ZXCode 是基于 OpenCode 的产品级 fork，目标是做一套面向中文团队和企业内部场景的 AI 编码 CLI。当前分支先完成了 TUI 首屏品牌、中文提示、启动文案和本地开发说明，底层仍沿用 OpenCode 的 agent、session、model、tool、permission 等核心架构。
 
-[![OpenCode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://opencode.ai)
+> ZXCode is derived from OpenCode and keeps the original MIT license attribution. It is not affiliated with or endorsed by the OpenCode maintainers.
 
----
+## 当前状态
 
-### Installation
+- 产品名：`ZXCode`
+- 目标命令名：`zxcode`
+- 当前开发启动命令：`bun run dev`
+- 默认界面文案：`你好呀，我是小智，您的企业级豆包！`
+- 当前默认模型配置仍放在本机全局配置里，不提交任何 API Key 到仓库
+- 内部包名和部分兼容标识暂时仍保留 `opencode`，后续按计划逐步收敛
 
-```bash
-# YOLO
-curl -fsSL https://opencode.ai/install | bash
+## 快速启动
 
-# Package managers
-npm i -g opencode-ai@latest        # or bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS and Linux (recommended, always up to date)
-brew install opencode              # macOS and Linux (official brew formula, updated less)
-sudo pacman -S opencode            # Arch Linux (Stable)
-paru -S opencode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Any OS
-nix run nixpkgs#opencode           # or github:anomalyco/opencode for latest dev branch
+依赖 Bun，仓库推荐版本见 `package.json` 的 `packageManager` 字段。
+
+```powershell
+cd D:\coding\zhixiangcode
+bun install
+bun run dev
 ```
 
-> [!TIP]
-> Remove versions older than 0.1.x before installing.
+如果已经有旧窗口在运行，先按 `Ctrl+C` 退出，再重新执行 `bun run dev`。
 
-### Desktop App (BETA)
+## 常用命令
 
-OpenCode is also available as a desktop application. Download directly from the [releases page](https://github.com/anomalyco/opencode/releases) or [opencode.ai/download](https://opencode.ai/download).
+```powershell
+# 启动 TUI
+bun run dev
 
-| Platform              | Download                           |
-| --------------------- | ---------------------------------- |
-| macOS (Apple Silicon) | `opencode-desktop-mac-arm64.dmg`   |
-| macOS (Intel)         | `opencode-desktop-mac-x64.dmg`     |
-| Windows               | `opencode-desktop-windows-x64.exe` |
-| Linux                 | `.deb`, `.rpm`, or `.AppImage`     |
+# 启动桌面端开发
+bun run dev:desktop
 
-```bash
-# macOS (Homebrew)
-brew install --cask opencode-desktop
-# Windows (Scoop)
-scoop bucket add extras; scoop install extras/opencode-desktop
+# 启动 Web/App 开发
+bun run dev:web
+
+# 类型检查
+bun run typecheck
 ```
 
-#### Installation Directory
+注意：根目录的 `test` 脚本会主动退出。需要测试时进入具体 package，例如：
 
-The install script respects the following priority order for the installation path:
-
-1. `$OPENCODE_INSTALL_DIR` - Custom installation directory
-2. `$XDG_BIN_DIR` - XDG Base Directory Specification compliant path
-3. `$HOME/bin` - Standard user binary directory (if it exists or can be created)
-4. `$HOME/.opencode/bin` - Default fallback
-
-```bash
-# Examples
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
+```powershell
+cd packages\opencode
+bun test
 ```
 
-### Agents
+## 模型配置
 
-OpenCode includes two built-in agents you can switch between with the `Tab` key.
+本机全局配置文件通常位于：
 
-- **build** - Default, full-access agent for development work
-- **plan** - Read-only agent for analysis and code exploration
-  - Denies file edits by default
-  - Asks permission before running bash commands
-  - Ideal for exploring unfamiliar codebases or planning changes
+```powershell
+$HOME\.config\opencode\opencode.jsonc
+```
 
-Also included is a **general** subagent for complex searches and multistep tasks.
-This is used internally and can be invoked using `@general` in messages.
+当前可以通过 OpenAI-compatible provider 接入火山 Ark、Ollama 或其他兼容服务。不要把真实 API Key 提交到仓库。
 
-Learn more about [agents](https://opencode.ai/docs/agents).
+示例结构：
 
-### Documentation
+```jsonc
+{
+  "model": "volcengine/glm-5.1",
+  "provider": {
+    "volcengine": {
+      "name": "Volcengine Ark (Coding)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "apiKey": "YOUR_API_KEY",
+        "baseURL": "https://example.com/v1"
+      },
+      "models": {
+        "glm-5.1": {
+          "name": "GLM 5.1"
+        }
+      }
+    },
+    "ollama": {
+      "name": "Ollama Remote",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "apiKey": "not-needed",
+        "baseURL": "http://your-ollama-host:11434/v1"
+      },
+      "models": {
+        "qwen3-32b": {
+          "id": "qwen3:32b",
+          "name": "Qwen3 32B"
+        }
+      }
+    }
+  }
+}
+```
 
-For more info on how to configure OpenCode, [**head over to our docs**](https://opencode.ai/docs).
+启动后可在界面输入：
 
-### Contributing
+```text
+/models
+```
 
-If you're interested in contributing to OpenCode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.
+切换当前使用的模型。
 
-### Building on OpenCode
+## 已完成的品牌化改动
 
-If you are working on a project that's related to OpenCode and is using "opencode" as part of its name, for example "opencode-dashboard" or "opencode-mobile", please add a note to your README to clarify that it is not built by the OpenCode team and is not affiliated with us in any way.
+- 首页大字 Logo 改为 `ZXCode`
+- 终端标题改为 `ZXCode` / `ZX`
+- 首页输入框提示改为中文
+- 首页随机 Tip 改为中文，并将可见命令提示改为 `zxcode`
+- direct run 的 splash 和继续命令改为 `ZXCode` / `zxcode`
 
----
+## 后续计划
 
-**Join our community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+完整产品化目标记录在：
+
+- `docs/superpowers/specs/2026-06-11-zxcode-product-fork-design.md`
+- `docs/superpowers/plans/2026-06-11-zxcode-product-fork.md`
+
+后续重点：
+
+- 增加统一产品身份模块
+- 将可安装 CLI 从 `opencode` 迁移到 `zxcode`
+- 新配置目录优先使用 `.zxcode` / `~/.zxcode`
+- 保留对旧 OpenCode 配置的只读兼容
+- 更新安装脚本、包元数据、发布产物和帮助快照
+
+## 许可证与来源
+
+本项目基于 OpenCode 修改，保留原项目 MIT License。ZXCode 是独立 fork，不代表 OpenCode 官方团队。
