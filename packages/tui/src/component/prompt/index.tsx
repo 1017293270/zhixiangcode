@@ -1300,8 +1300,7 @@ export function Prompt(props: PromptProps) {
       const example = shell()[store.placeholder % shell().length]
       return `Run a command... "${example}"`
     }
-    if (!list().length) return undefined
-    return `Ask anything... "${list()[store.placeholder % list().length]}"`
+    return "你好呀，我是小智，您的企业级豆包！"
   })
 
   const spinnerDef = createMemo(() => {
